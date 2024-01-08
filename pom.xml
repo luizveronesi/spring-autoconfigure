@@ -7,7 +7,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>dev.luizveronesi</groupId>
 	<artifactId>spring-autoconfigure</artifactId>
-	<version>0.0.1</version>
+	<version>0.0.2</version>
 	<name>Base: Autoconfigure for Mongo and Google Oauth2</name>
 
 	<properties>
@@ -20,6 +20,7 @@
 		<javax.validation.version>2.0.1.Final</javax.validation.version>
 		<commons.io.version>2.15.1</commons.io.version>
 		<springdoc.version>1.6.13</springdoc.version>
+		<commons.beanutils.version>1.9.4</commons.beanutils.version>
 	</properties>
 
 	<dependencies>
@@ -77,6 +78,11 @@
 			<version>${commons.io.version}</version>
 		</dependency>
 		<dependency>
+			<groupId>commons-beanutils</groupId>
+			<artifactId>commons-beanutils</artifactId>
+			<version>${commons.beanutils.version}</version>
+		</dependency>
+		<dependency>
 			<groupId>javax.validation</groupId>
 			<artifactId>validation-api</artifactId>
 			<version>${javax.validation.version}</version>
@@ -100,8 +106,18 @@
 					<encoding>UTF8</encoding>
 					<source>17</source>
 					<target>17</target>
+					<excludes>
+						<exclude>dev/luizveronesi/example/**</exclude>
+					</excludes>
 				</configuration>
 			</plugin>
 		</plugins>
 	</build>
+	<distributionManagement>
+		<repository>
+			<id>ossrh</id>
+			<name>Central Repository OSSRH</name>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+		</repository>
+	</distributionManagement>
 </project>

@@ -7,6 +7,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import dev.luizveronesi.autoconfigure.configuration.ObjectMapperAutoConfiguration;
@@ -16,7 +17,8 @@ import lombok.extern.log4j.Log4j2;
 public final class JsonUtil {
     private static final ObjectMapper mapper = ObjectMapperAutoConfiguration.mapper();
 
-    private JsonUtil() { }
+    private JsonUtil() {
+    }
 
     public static <T> String serialize(T model) {
         return serialize(model, false);
@@ -24,6 +26,37 @@ public final class JsonUtil {
 
     public static <T> String serializePrettyPrint(T model) {
         return serialize(model, true);
+    }
+
+    public static <T> T deserialize(InputStream json, TypeReference<T> typeRef) {
+        if (json == null)
+            return null;
+
+        try {
+            return mapper.readValue(json, typeRef);
+        } catch (IOException e) {
+            log.error("Json deserialization error", e);
+            return null;
+        }
+    }
+
+    public static <T> T deserialize(String json, TypeReference<T> typeRef) {
+        if (StringUtils.isEmpty(json))
+            return null;
+        try {
+            return mapper.readValue(json, typeRef);
+        } catch (IOException e) {
+            log.error("Json deserialization error", e);
+            return null;
+        }
+    }
+
+    public static JsonNode deserialize(String json) {
+        try {
+            return mapper.readTree(json);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private static <T> String serialize(T model, boolean prettyPrint) {
@@ -35,33 +68,10 @@ public final class JsonUtil {
                 return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(model);
             else
                 return mapper.writeValueAsString(model);
-        }
-        catch (JsonProcessingException e) {
+        } catch (JsonProcessingException e) {
             log.error("Json serialization error", e);
             return null;
         }
     }
 
-    public static <T> T deserialize(InputStream json, TypeReference<T> typeRef) {
-        if (json == null)
-            return null;
-
-        try {
-            return mapper.readValue(json, typeRef);
-        }
-        catch (IOException e) {
-            log.error("Json deserialization error", e);
-            return null;
-        }
-    }
-    
-    public static <T> T deserialize(String json, TypeReference<T> typeRef) {
-        if (StringUtils.isEmpty(json)) return null;
-        try {
-            return mapper.readValue(json, typeRef);
-        } catch (IOException e) {
-            log.error("Json deserialization error", e);
-            return null;
-        }
-    }
 }
