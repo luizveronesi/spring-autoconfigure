@@ -7,7 +7,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>dev.luizveronesi</groupId>
 	<artifactId>spring-autoconfigure</artifactId>
-	<version>0.0.2</version>
+	<version>0.0.4</version>
 	<name>Base: Autoconfigure for Mongo and Google Oauth2</name>
 
 	<properties>
@@ -115,9 +115,9 @@
 	</build>
 	<distributionManagement>
 		<repository>
-			<id>ossrh</id>
-			<name>Central Repository OSSRH</name>
-			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+			<id>github</id>
+			<name>GitHub Packages</name>
+			<url>https://maven.pkg.github.com/luizveronesi/spring-autoconfigure</url>
 		</repository>
 	</distributionManagement>
 </project>

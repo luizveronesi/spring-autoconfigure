@@ -1,10 +1,10 @@
 package dev.luizveronesi.autoconfigure.utils;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.time.format.ResolverStyle;
 import java.util.Date;
 
 import org.apache.commons.lang3.StringUtils;
@@ -20,6 +20,19 @@ public final class DateUtil {
     private static final String TIME_PATTERN = "HH:mm:ss";
 
     private static final String DATETIME_PATTERN = "uuuu-MM-dd'T'HH:mm:ss'Z'";
+
+    public static String toString(Date date) {
+        return toString(date, DATETIME_PATTERN);
+    }
+
+    public static String toString(Date date, String pattern) {
+        if (date == null) {
+            return null;
+        }
+
+        var df = new SimpleDateFormat(pattern);
+        return df.format(date);
+    }
 
     public static String convertFromObjectId(String id) {
     	var millis = Long.parseLong(id.substring(0, 8), 16) * 1000;
@@ -116,7 +129,7 @@ public final class DateUtil {
     }
 
     private static DateTimeFormatter getFormatter(String pattern) {
-        return DateTimeFormatter.ofPattern(pattern).withResolverStyle(ResolverStyle.STRICT);
+    	return DateTimeFormatter.ofPattern(pattern);
     }
 
 }

@@ -43,6 +43,11 @@ public class AuthUtil {
 		return null;
 	}
 
+	public static String getAuthenticatedUserId() {
+		var authentication = (IUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		return authentication.getId();
+	}
+
 	public static String getAuthenticatedUserEmail() {
 		var authentication = (IUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		return authentication.getEmail();

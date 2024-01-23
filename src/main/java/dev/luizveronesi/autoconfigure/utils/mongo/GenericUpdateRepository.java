@@ -51,7 +51,7 @@ public class GenericUpdateRepository {
 		var it = object.fields();
 		while (it.hasNext()) {
 			Map.Entry<String, JsonNode> entry = it.next();
-			list.add(Criteria.where(entry.getKey()).is(MongoQueryConverter.execute(entry.getKey(), entry.getValue())));
+			list.add(Criteria.where(entry.getKey()).is(MongoCoreUtils.execute(entry.getKey(), entry.getValue())));
 		}
 
 		Criteria criteria = new Criteria().andOperator(list.toArray(new Criteria[list.size()]));
@@ -72,7 +72,7 @@ public class GenericUpdateRepository {
 	}
 
 	public Long updateByUid(Class<?> entityClass, String id, String values) {
-		Query query = new Query(Criteria.where("uid").is(id));
+		Query query = new Query(Criteria.where("id").is(id));
 		UpdateResult result = mongoTemplate.updateMulti(query, this.createUpdateObject(values), entityClass);
 		return result.getMatchedCount();
 	}
@@ -87,7 +87,7 @@ public class GenericUpdateRepository {
 			if (entry.getValue().asText().equals("null")) {
 				update.set(entry.getKey(), null);
 			} else {
-				Object value = MongoQueryConverter.execute(entry.getKey(), entry.getValue());
+				Object value = MongoCoreUtils.execute(entry.getKey(), entry.getValue());
 				update.set(entry.getKey(), value);
 			}
 		}
